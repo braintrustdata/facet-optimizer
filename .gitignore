@@ -3,4 +3,7 @@
 __pycache__/
 *.pyc
 artifacts/
-
+.local/
+prompts/*.yaml
+datasets/*.json
+datasets/*.jsonl

@@ -1,31 +1,16 @@
 ---
 name: facet-prompt-optimizer
-description: Use when turning production Braintrust facet executions into a versioned prompt YAML plus a ground-truth dataset, then running `bt eval` against `brain-facet-1` on `braintrustproxy.com/v1` to improve the facet prompt without storing the prompt text in dataset rows.
+description: Use when bootstrapping a facet ground-truth dataset, running initial facet evals, or later optimizing a facet prompt in this repo.
 ---
 
-# Purpose
+# Instructions
 
-Use this skill when the goal is to improve a customer-owned facet prompt by:
+Follow the workflow in [README.md](../../../README.md). Treat the README as the source of truth for commands, defaults, and sequencing.
 
-1. sampling positive and negative production executions
-2. extracting the stable facet prompt into a versioned YAML file
-3. building dataset rows with only `facet_name` and `preprocessed_text`
-4. uploading those rows into a Braintrust dataset
-5. iterating on the prompt with `bt eval`
+# Agent guardrails
 
-# Workflow
-
-1. Sample roots with [scripts/sample_facet_roots.py](../../../scripts/sample_facet_roots.py).
-2. Build the versioned prompt YAML and local ground-truth seed dataset with [scripts/build_ground_truth_dataset.py](../../../scripts/build_ground_truth_dataset.py).
-3. Review the generated dataset locally and replace seeded `expected` values with real ground truth where needed.
-4. Upload the reviewed dataset with [scripts/upload_ground_truth_dataset.py](../../../scripts/upload_ground_truth_dataset.py).
-5. Run [eval_prompt.py](../../../eval_prompt.py) with `bt eval` to score prompt changes against the dataset.
-
-# Guardrails
-
-- Dataset rows should contain only the factored substrate: `facet_name` and `preprocessed_text`.
-- Keep the prompt itself in a versioned YAML file under `prompts/`.
-- Treat production facet values as seed labels, not automatic gold labels.
-- If prompt factoring cannot identify a single varying message, rerun with `--input-message-index` and inspect the generated summary.
-- Keep the sampling SQL window explicit; do not quietly mix time ranges.
-
+- Do not duplicate workflow instructions here. Update the README first when the workflow changes.
+- Use the latest `bt` CLI and call `bt eval` directly for evals.
+- Keep customer-owned prompts and generated datasets in local ignored paths such as `.local/facet-optimizer`.
+- Do not treat production facet outputs as ground truth; use generated or reviewed `expected` values.
+- Do not proceed from dataset creation to prompt optimization until the user has reviewed the dataset balance and initial evals.
