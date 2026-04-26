@@ -3,6 +3,7 @@ name = "facet-optimizer"
 version = "0.1.0"
 description = "Sample Braintrust facet executions, factor prompts into versioned YAML, build ground-truth datasets, and evaluate prompt changes."
 readme = "README.md"
+license = { file = "LICENSE" }
 requires-python = ">=3.11"
 dependencies = [
   "autoevals>=0.0.129",
